@@ -13,12 +13,18 @@ export class Category extends Entity {
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      pattern: '^[a-zA-z0-9]+$',
+    }
   })
   code: string;
 
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      minLength: 2
+    }
   })
   name: string;
 
