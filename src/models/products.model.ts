@@ -15,6 +15,9 @@ export class Products extends SoftDeleteEntity {
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      pattern: '^[a-zA-z0-9]+$',
+    }
   })
   code: string;
 
