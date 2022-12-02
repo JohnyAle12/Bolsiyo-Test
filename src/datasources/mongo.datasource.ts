@@ -1,15 +1,16 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
+require('dotenv').config();
 
 const config = {
   name: 'mongo',
   connector: 'mongodb',
-  url: 'mongodb+srv://johnyprieto:PPomFFkBHQVXSzgk@cluster0.9lbdhu7.mongodb.net/bolsiyo',
-  host: 'cluster0.9lbdhu7.mongodb.net',
-  port: 27017,
-  user: 'johnyprieto',
-  password: 'PPomFFkBHQVXSzgk',
-  database: 'bolsiyo',
+  url: process.env.MONGODB_CONNECTION,
+  host: process.env.MONGODB_HOST,
+  port: process.env.MONGODB_PORT,
+  user: process.env.MONGODB_USER,
+  password: process.env.MONGODB_PASSWORD,
+  database: process.env.MONGODB_DB,
   useNewUrlParser: true
 };
 
