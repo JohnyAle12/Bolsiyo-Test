@@ -1,10 +1,11 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, repository} from '@loopback/repository';
+import {SoftCrudRepository} from 'loopback4-soft-delete';
 import {MongoDataSource} from '../datasources';
-import {Products, ProductsRelations, Category} from '../models';
+import {Category, Products, ProductsRelations} from '../models';
 import {CategoryRepository} from './category.repository';
 
-export class ProductsRepository extends DefaultCrudRepository<
+export class ProductsRepository extends SoftCrudRepository<
   Products,
   typeof Products.prototype.id,
   ProductsRelations

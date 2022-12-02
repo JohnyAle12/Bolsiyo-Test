@@ -1,9 +1,10 @@
-import {belongsTo, Entity, model, property} from '@loopback/repository';
-import {CategoryWithRelations, Category} from './category.model';
+import {belongsTo, model, property} from '@loopback/repository';
+import {SoftDeleteEntity} from 'loopback4-soft-delete';
+import {Category, CategoryWithRelations} from './category.model';
 import {Company} from './company.model';
 
 @model()
-export class Products extends Entity {
+export class Products extends SoftDeleteEntity {
   @property({
     type: 'string',
     id: true,
