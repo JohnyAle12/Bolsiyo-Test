@@ -72,4 +72,24 @@ export class CategoryController {
     await this.categoryRepository.updateById(id, category);
   }
 
+  @patch('/active-category/{id}')
+  @response(204, {
+    description: 'Update active Category',
+  })
+  async activeCategory(
+    @param.path.string('id') id: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Category, {partial: true}),
+        },
+      },
+    })
+    category: Category,
+  ): Promise<void> {
+    await this.categoryRepository.updateById(id, {
+      isActive: category?.isActive || false
+    });
+  }
+
 }
