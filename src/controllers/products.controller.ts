@@ -91,4 +91,28 @@ export class ProductsController {
 
     return this.productsRepository.findAll(query);
   }
+
+  @get('/products-company')
+  @response(200, {
+    description: 'Array of Products with its company',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Products, {includeRelations: true})
+      },
+    },
+  })
+  async find(
+    @param.filter(Products) filter?: Filter<Products>,
+  ): Promise<(Products & ProductsRelations)[]> {
+    const query = {
+      ...filter,
+      include: [
+        {
+          relation: 'company',
+        }
+      ],
+      limit: 30
+    };
+    return this.productsRepository.findAll(query);
+  }
 }

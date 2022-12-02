@@ -22,9 +22,8 @@ export class Company extends Entity {
   })
   address: string;
 
-  @hasMany(() => Products, {keyTo: 'companyId'})
-  products?: Products[];
-
+  @hasMany(() => Products)
+  products: Products[];
 
   constructor(data?: Partial<Company>) {
     super(data);
