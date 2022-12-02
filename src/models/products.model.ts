@@ -16,6 +16,8 @@ export class Products extends SoftDeleteEntity {
     type: 'string',
     required: true,
     jsonSchema: {
+      minLength: 4,
+      maxLength: 10,
       pattern: '^[a-zA-z0-9]+$',
     }
   })
@@ -24,6 +26,9 @@ export class Products extends SoftDeleteEntity {
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      minLength: 4
+    }
   })
   name: string;
 
@@ -47,6 +52,9 @@ export class Products extends SoftDeleteEntity {
   @property({
     type: 'number',
     required: true,
+    jsonSchema: {
+      pattern: '^[0-9]+$',
+    }
   })
   price: number;
 
