@@ -4,27 +4,21 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
-import {Products} from '../models';
+import {Products, ProductsRelations} from '../models';
 import {ProductsRepository} from '../repositories';
 
 export class ProductsController {
   constructor(
     @repository(ProductsRepository)
-    public productsRepository : ProductsRepository,
-  ) {}
+    public productsRepository: ProductsRepository,
+  ) { }
 
   @post('/products')
   @response(200, {
@@ -146,5 +140,35 @@ export class ProductsController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.productsRepository.deleteById(id);
+  }
+
+  @get('/products/company/{companyId}')
+  @response(200, {
+    description: 'Products from a specific company',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Products, {includeRelations: true}),
+      },
+    },
+  })
+  async findByCompanyId(
+    @param.path.string('companyId') companyId: string,
+    @param.filter(Products) filter?: Filter<Products>,
+  ): Promise<(Products & ProductsRelations)[]> {
+    const query = {
+      ...filter,
+      where: {companyId},
+      include: [
+        {
+          relation: 'category',
+          scope: {
+            where: {isActive: true},
+          },
+        },
+      ],
+      limit: 3
+    };
+
+    return this.productsRepository.find(query);
   }
 }

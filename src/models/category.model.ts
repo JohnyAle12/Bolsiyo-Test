@@ -1,5 +1,5 @@
 import {Entity, hasMany, model, property} from '@loopback/repository';
-import {Products} from './products.model';
+import {Products, ProductsWithRelations} from './products.model';
 
 @model()
 export class Category extends Entity {
@@ -34,8 +34,8 @@ export class Category extends Entity {
   })
   isActive: boolean;
 
-  @hasMany(() => Products, {keyTo: 'categoryId'})
-  products?: Products[];
+  @hasMany(() => Products)
+  products: Products[];
 
 
   constructor(data?: Partial<Category>) {
@@ -44,7 +44,7 @@ export class Category extends Entity {
 }
 
 export interface CategoryRelations {
-  // describe navigational properties here
+  products?: ProductsWithRelations;
 }
 
 export type CategoryWithRelations = Category & CategoryRelations;

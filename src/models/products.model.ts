@@ -1,5 +1,5 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
-import {Category} from './category.model';
+import {CategoryWithRelations, Category} from './category.model';
 import {Company} from './company.model';
 
 @model()
@@ -35,15 +35,11 @@ export class Products extends Entity {
   })
   brand: string;
 
-  @belongsTo(() => Category)
-  categoryId: string;
-
   @property({
     type: 'number',
     required: true,
   })
   quantity: number;
-
   @property({
     type: 'number',
     required: true,
@@ -53,6 +49,9 @@ export class Products extends Entity {
   @belongsTo(() => Company)
   companyId: string;
 
+  @belongsTo(() => Category)
+  categoryId: string;
+
   constructor(data?: Partial<Products>) {
     super(data);
   }
@@ -60,6 +59,7 @@ export class Products extends Entity {
 
 export interface ProductsRelations {
   // describe navigational properties here
+  category?: CategoryWithRelations;
 }
 
 export type ProductsWithRelations = Products & ProductsRelations;
