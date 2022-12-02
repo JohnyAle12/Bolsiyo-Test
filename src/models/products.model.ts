@@ -37,7 +37,7 @@ export class Products extends Entity {
     type: 'string',
     required: true,
   })
-  category_id: string;
+  categoryId: string;
 
   @property({
     type: 'number',
@@ -55,7 +55,7 @@ export class Products extends Entity {
     type: 'string',
     required: true,
   })
-  company_id: string;
+  companyId: string;
 
 
   constructor(data?: Partial<Products>) {
