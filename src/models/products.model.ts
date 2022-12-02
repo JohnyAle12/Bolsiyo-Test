@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {Category} from './category.model';
+import {Company} from './company.model';
 
 @model()
 export class Products extends Entity {
@@ -33,10 +35,7 @@ export class Products extends Entity {
   })
   brand: string;
 
-  @property({
-    type: 'string',
-    required: true,
-  })
+  @belongsTo(() => Category)
   categoryId: string;
 
   @property({
@@ -51,12 +50,8 @@ export class Products extends Entity {
   })
   price: number;
 
-  @property({
-    type: 'string',
-    required: true,
-  })
+  @belongsTo(() => Company)
   companyId: string;
-
 
   constructor(data?: Partial<Products>) {
     super(data);
