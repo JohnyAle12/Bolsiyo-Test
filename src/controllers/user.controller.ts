@@ -3,12 +3,13 @@ import {
   Credentials,
   MyUserService, TokenServiceBindings, User, UserRepository, UserServiceBindings
 } from '@loopback/authentication-jwt';
-import {inject} from '@loopback/core';
+import {inject, intercept} from '@loopback/core';
 import {model, property, repository} from '@loopback/repository';
 import {get, getModelSchemaRef, post, requestBody, SchemaObject} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
 import _ from 'lodash';
+import {ValidateUserEmailInterceptor} from '../interceptors';
 
 @model()
 export class NewUserRequest extends User {
@@ -107,6 +108,7 @@ export class UserController {
     return currentUserProfile[securityId];
   }
 
+  @intercept(ValidateUserEmailInterceptor.BINDING_KEY)
   @post('/signup', {
     responses: {
       '200': {

@@ -1,4 +1,6 @@
+import {UserRepository} from '@loopback/authentication-jwt';
 import {
+  /* inject, */
   injectable,
   Interceptor,
   InvocationContext,
@@ -8,19 +10,18 @@ import {
 } from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
-import {CategoryRepository} from '../repositories/category.repository';
 
 /**
  * This class will be bound to the application as an `Interceptor` during
  * `boot`
  */
-@injectable({tags: {key: ValidateCategoryNameAndCodeInterceptor.BINDING_KEY}})
-export class ValidateCategoryNameAndCodeInterceptor implements Provider<Interceptor> {
-  static readonly BINDING_KEY = `interceptors.${ValidateCategoryNameAndCodeInterceptor.name}`;
+@injectable({tags: {key: ValidateUserEmailInterceptor.BINDING_KEY}})
+export class ValidateUserEmailInterceptor implements Provider<Interceptor> {
+  static readonly BINDING_KEY = `interceptors.${ValidateUserEmailInterceptor.name}`;
 
   constructor(
-    @repository(CategoryRepository)
-    public categoryRepository: CategoryRepository
+    @repository(UserRepository)
+    public userRepository: UserRepository
   ) { }
 
   /**
@@ -43,14 +44,13 @@ export class ValidateCategoryNameAndCodeInterceptor implements Provider<Intercep
     next: () => ValueOrPromise<InvocationResult>,
   ) {
     try {
-
-      if (invocationCtx.methodName === 'create') {
-        const {code, name} = invocationCtx.args[0];
-        const alreadyExist = await this.categoryRepository.find({where: {or: [{name}, {code}]}});
+      if (invocationCtx.methodName === 'signUp') {
+        const {email} = invocationCtx.args[0];
+        const alreadyExist = await this.userRepository.find({where: {email}});
 
         if (alreadyExist.length) {
           throw new HttpErrors.UnprocessableEntity(
-            'Name or Corde already exist',
+            'User email already exist',
           );
         }
       }
