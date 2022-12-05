@@ -75,8 +75,11 @@ export class ProductsController {
   })
   async findByCompanyId(
     @param.path.string('companyId') companyId: string,
+    @param.query.number('page') page?: number,
+    @param.query.number('pageSize') pageSize?: number,
     @param.filter(Products) filter?: Filter<Products>,
   ): Promise<(Products & ProductsRelations)[]> {
+    const limit = pageSize || 10;
     const query = {
       ...filter,
       where: {companyId},
@@ -88,7 +91,8 @@ export class ProductsController {
           },
         },
       ],
-      limit: 30
+      limit,
+      skip: (page || 0) * limit
     };
 
     return this.productsRepository.findAll(query);
