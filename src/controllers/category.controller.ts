@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {intercept} from '@loopback/core';
 import {
   Filter, repository
@@ -11,6 +12,7 @@ import {ValidateCategoryNameAndCodeInterceptor} from '../interceptors';
 import {Category} from '../models';
 import {CategoryRepository} from '../repositories';
 
+@authenticate('jwt')
 export class CategoryController {
   constructor(
     @repository(CategoryRepository)

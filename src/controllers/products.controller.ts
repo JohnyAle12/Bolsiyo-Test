@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Filter, repository
 } from '@loopback/repository';
@@ -9,6 +10,7 @@ import {
 import {Products, ProductsRelations} from '../models';
 import {ProductsRepository} from '../repositories';
 
+@authenticate('jwt')
 export class ProductsController {
   constructor(
     @repository(ProductsRepository)
