@@ -1,3 +1,4 @@
+import {intercept} from '@loopback/core';
 import {
   Filter, repository
 } from '@loopback/repository';
@@ -6,6 +7,7 @@ import {
   getModelSchemaRef, param, patch, post, requestBody,
   response
 } from '@loopback/rest';
+import {ValidateCategoryNameAndCodeInterceptor} from '../interceptors';
 import {Category} from '../models';
 import {CategoryRepository} from '../repositories';
 
@@ -15,6 +17,7 @@ export class CategoryController {
     public categoryRepository: CategoryRepository,
   ) { }
 
+  @intercept(ValidateCategoryNameAndCodeInterceptor.BINDING_KEY)
   @post('/categories')
   @response(200, {
     description: 'Category model instance',
